@@ -1,5 +1,9 @@
 *.class
 *.log
+*.iml
+
+# IDE specific
+.idea/
 
 # sbt specific
 .cache
