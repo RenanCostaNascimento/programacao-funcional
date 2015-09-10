@@ -5,12 +5,8 @@ import common._
 object Main {
 
   def main(args: Array[String]) {
-    println("Pascal's Triangle")
-    for (row <- 0 to 10) {
-      for (col <- 0 to row)
-        print(pascal(col, row) + " ")
-      println()
-    }
+    println(balance("()()".toList))
+    println("END")
   }
 
   /**
@@ -29,9 +25,14 @@ object Main {
    */
   def balance(chars: List[Char]): Boolean = {
     if (chars.isEmpty) throw new NoSuchElementException
-    def balanceIter(char: List[Char], sumParen: Int): Int = {
+    def balanceIter(chars: List[Char], sumParen: Int): Boolean = {
 
-      if (!chars.isEmpty) {
+      if (sumParen < 0) {
+        false
+      }
+      if (chars.isEmpty) {
+        sumParen == 0
+      } else {
         if (chars.head == '(') {
           balanceIter(chars.tail, sumParen + 1)
         } else {
@@ -41,8 +42,6 @@ object Main {
             balanceIter(chars.tail, sumParen)
           }
         }
-      }else{
-        sumParen == 0
       }
     }
 
