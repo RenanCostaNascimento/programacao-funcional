@@ -1,8 +1,9 @@
 package example
 
-import org.scalatest.FunSuite
+import java.util.NoSuchElementException
 
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 
 /**
@@ -48,7 +49,7 @@ class ListsSuite extends FunSuite {
     * Isso permite escrever os testes de uma forma mais legível:
     */
   test("one plus one is three?") {
-    assert(1 + 1 == 3) // Essa assertiva falha! Vá em frente e a concerte.
+    assert(1 + 1 == 2) // Essa assertiva falha! Vá em frente e a concerte.
   }
 
 
@@ -76,7 +77,7 @@ class ListsSuite extends FunSuite {
     * escrever testes.
     */
   test("details why one plus one is not three") {
-    assert(1 + 1 === 3) // Fix me, please!
+    assert(1 + 1 === 2) // Fix me, please!
   }
 
 
@@ -125,8 +126,22 @@ class ListsSuite extends FunSuite {
   test("sum of a few numbers") {
     assert(sum(List(1,2,0)) === 3)
   }
+  test("sum of empty list") {
+    assert(sum(List()) === 0)
+  }
+  test("sum with negative numbers") {
+    assert(sum(List(1, 2, -3, 1, 0)) === 1)
+  }
 
   test("max of a few numbers") {
     assert(max(List(3, 7, 2)) === 7)
+  }
+  test("max of empty list") {
+    intercept[NoSuchElementException]{
+      max(List())
+    }
+  }
+  test("max of with negative numbers") {
+    assert(max(List(-1, 3, 0, 7, 2, -8)) === 7)
   }
 }
