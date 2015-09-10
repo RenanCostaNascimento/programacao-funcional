@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/progfun-recfun.iml" filepath="$PROJECT_DIR$/progfun-recfun.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/trabalho1-recursao.iml" filepath="$PROJECT_DIR$/.idea/modules/trabalho1-recursao.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/trabalho1-recursao-build.iml" filepath="$PROJECT_DIR$/.idea/modules/trabalho1-recursao-build.iml" />
     </modules>
