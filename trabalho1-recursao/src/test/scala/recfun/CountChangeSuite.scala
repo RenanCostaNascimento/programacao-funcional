@@ -10,12 +10,27 @@ class CountChangeSuite extends FunSuite {
 
   import Main.countChange
 
-  test("countChange: exemplo dado nas instruções") {
-    //assert(countChange(4,List(1,2)) === 3)
+  test("countChange: exemplo dado nas instruções.") {
+    val expected = 3
+    val actual = countChange(4,List(1,2))
+    assert(actual === expected)
+  }
+  test("countChange: a ordem das moedas não deve influenciar nas quantidade de formas de dar o troco.") {
+    val expected = 3
+    val actual = countChange(4,List(2,1))
+    assert(actual === expected)
+  }
+  test("countChange: quando o troco é zero, espera-se zero formas de dar troco.") {
+    val expected = 0
+    val actual = countChange(0,List(1,2))
+    assert(actual === expected)
+  }
+  test("countChange: quando não há moedas para dar o troco, espera-se que o troco seja dado em balinhas (zero formas) =D.") {
+    val expected = 0
+    val actual = countChange(5,List())
+    assert(actual === expected)
   }
 
-  // ==================================================================
-  // Escreva mais testes.
-  // ==================================================================
+
 
 }
