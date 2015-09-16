@@ -5,6 +5,9 @@ import org.scalatest.FunSuite
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
+/**
+ * Aluno: Renan Costa Nascimento
+ */
 @RunWith(classOf[JUnitRunner])
 class BalanceSuite extends FunSuite {
 
