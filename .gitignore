@@ -4,6 +4,8 @@
 
 # IDE specific
 .idea/*
+*/.idea/*
+
 
 # sbt specific
 .cache
