@@ -9,7 +9,7 @@ object Main {
 
   def main(args: Array[String]) {
 
-    print(countChange(3, List(1,2)))
+    println(countChange(37, List(25, 10, 5, 1)))
   }
 
   /**
@@ -30,9 +30,7 @@ object Main {
     if (chars.isEmpty) throw new NoSuchElementException
     def balanceIter(chars: List[Char], sumParen: Int): Boolean = {
 
-      if (sumParen < 0) {
-        false
-      }
+      !(sumParen < 0)
       if (chars.isEmpty) {
         sumParen == 0
       } else {
@@ -55,32 +53,14 @@ object Main {
    * Exercício 3
    */
   def countChange(money: Int, coins: List[Int]): Int = {
-    def countChangeIter(money: Int, coins: List[Int], change: List[Int], changeCombination: Int): Int = {
-
-      def sum(xs: List[Int]): Int = {
-        def sumIter(xs: List[Int], acumulador: Int): Int = {
-          if (xs.isEmpty) acumulador else sumIter(xs.tail, acumulador + xs.head)
-        }
-
-        sumIter(xs, 0)
-      }
-
-      if (coins.isEmpty) {
-        changeCombination
+    def countChangeIter(money: Int, coins: List[Int]): Int = {
+      if (money == 0) {
+        1
       } else {
-        if (sum(change) == money) {
-          if (coins.head == change.head) {
-            countChangeIter(money, coins.tail, change.tail, changeCombination + 1)
-          } else {
-            countChangeIter(money, coins, change.tail, changeCombination + 1)
-          }
+        if (money > 0 && !coins.isEmpty) {
+          countChangeIter(money - coins.head, coins) + countChange(money, coins.tail)
         } else {
-          if (sum(change) + coins.head <= money) {
-            countChangeIter(money, coins, change ::: List(coins.head), changeCombination)
-          } else {
-            countChangeIter(money, coins, change.tail, changeCombination)
-          }
-
+          0
         }
       }
     }
@@ -88,9 +68,7 @@ object Main {
     if (money == 0) {
       0
     } else {
-      countChangeIter(money, coins, List(), 0)
+      countChangeIter(money, coins)
     }
   }
-
-
 }

@@ -30,7 +30,19 @@ class CountChangeSuite extends FunSuite {
     val actual = countChange(5,List())
     assert(actual === expected)
   }
-
-
-
+  test("countChange: questão da OBM 2011") {
+    val expected = 24
+    val actual = countChange(37,List(1,5,10,25))
+    assert(actual === expected)
+  }
+  test("countChange: questão da OBM 2011: reversed") {
+    val expected = 24
+    val actual = countChange(37,List(25,10,5,1))
+    assert(actual === expected)
+  }
+  test("countChange: questão da OBM 2011: mixed") {
+    val expected = 24
+    val actual = countChange(37,List(1,10,25,5))
+    assert(actual === expected)
+  }
 }
