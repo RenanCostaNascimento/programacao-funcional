@@ -58,8 +58,10 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
-    val s4 = (x: Int) => x > 0
-    val s5 = (x: Int) => List(-1, 1, -2, 2, -3, 3).contains(x)
+    val allPositive = (x: Int) => x > 0
+    val positiveNegative = (x: Int) => List(-1, 1, -2, 2, -3, 3).contains(x)
+    val allEven = (x: Int) => List(2, 4, 6, 8, 10).contains(x)
+    val evenOdd = (x: Int) => List(2, 4, 6, 8, 10, 11).contains(x)
   }
 
   /** Este teste está desabilitado (usando a função `ignore`) porque o
@@ -111,48 +113,73 @@ class FunSetSuite extends FunSuite {
       assert(contains(intersect(s1, s2), 3) === false)
     }
   }
-  test("intersect(1,positiveIntegers): should contain 1") {
+  test("intersect(1,allPositive): should contain 1") {
 
     new TestSets {
-      assert(contains(intersect(s1, s4), 1) === true)
+      assert(contains(intersect(s1, allPositive), 1) === true)
     }
   }
-  test("intersect(1,positiveIntegers): should not contain 2 and 3") {
+  test("intersect(1,allPositive): should not contain 2 and 3") {
 
     new TestSets {
-      assert(contains(intersect(s1, s4), 2) === false)
-      assert(contains(intersect(s1, s4), 3) === false)
-    }
-  }
-
-  test("diff(positiveIntegers,1): should not contain 1") {
-
-    new TestSets {
-      assert(contains(diff(s4, s1), 1) === false)
-    }
-  }
-  test("diff(positiveIntegers,1): should contain 2 and 3") {
-
-    new TestSets {
-      assert(contains(diff(s4, s1), 2) === true)
-      assert(contains(diff(s4, s1), 3) === true)
+      assert(contains(intersect(s1, allPositive), 2) === false)
+      assert(contains(intersect(s1, allPositive), 3) === false)
     }
   }
 
-  test("filter(s5,positiveIntegers): should contain 1, 2 and 3") {
+  test("diff(allPositive,1): should not contain 1") {
 
     new TestSets {
-      assert(contains(filter(s5, s4), 1) === true)
-      assert(contains(filter(s5, s4), 2) === true)
-      assert(contains(filter(s5, s4), 3) === true)
+      assert(contains(diff(allPositive, s1), 1) === false)
     }
   }
-  test("filter(s5,positiveIntegers): should not contain -1, -2 or -3") {
+  test("diff(allPositive,1): should contain 2 and 3") {
 
     new TestSets {
-      assert(contains(filter(s5, s4), -1) === false)
-      assert(contains(filter(s5, s4), -2) === false)
-      assert(contains(filter(s5, s4), -3) === false)
+      assert(contains(diff(allPositive, s1), 2) === true)
+      assert(contains(diff(allPositive, s1), 3) === true)
+    }
+  }
+
+  test("filter(positiveNegative,allPositive): should contain 1, 2 and 3") {
+
+    new TestSets {
+      assert(contains(filter(positiveNegative, x => x > 0), 1) === true)
+      assert(contains(filter(positiveNegative, x => x > 0), 2) === true)
+      assert(contains(filter(positiveNegative, x => x > 0), 3) === true)
+    }
+  }
+  test("filter(positiveNegative,allPositive): should not contain -1, -2 or -3") {
+
+    new TestSets {
+      assert(contains(filter(positiveNegative, x => x > 0), -1) === false)
+      assert(contains(filter(positiveNegative, x => x > 0), -2) === false)
+      assert(contains(filter(positiveNegative, x => x > 0), -3) === false)
+    }
+  }
+
+  test("forall(positiveNegative,allPositive): should be false") {
+
+    new TestSets {
+      assert(forall(positiveNegative, x => x > 0) === false)
+    }
+  }
+  test("forall(allPositive,allPositive): should be true") {
+
+    new TestSets {
+      assert(forall(allPositive, x => x > 0) === true)
+    }
+  }
+  test("forall(evenOdd,even): should be false") {
+
+    new TestSets {
+      assert(forall(evenOdd, x => x % 2 == 0) === false)
+    }
+  }
+  test("forall(even,even): should be true") {
+
+    new TestSets {
+      assert(forall(allEven, x => x % 2 == 0) === true)
     }
   }
 

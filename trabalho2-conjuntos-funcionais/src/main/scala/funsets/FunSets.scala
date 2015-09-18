@@ -51,11 +51,11 @@ object FunSets {
     */
   def forall(s: Set, p: Int => Boolean): Boolean = {
     def iter(a: Int): Boolean = {
-      if (???) ???
-      else if (???) ???
-      else iter(???)
+      if (a > bound) true
+      else if (s(a)) p(a)
+      else iter(a + 1)
     }
-    iter(???)
+    iter(-bound)
   }
 
   /** Retorna `true` se *algum* dos inteiros (entre os limites
