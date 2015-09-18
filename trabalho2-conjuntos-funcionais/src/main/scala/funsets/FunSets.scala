@@ -18,27 +18,27 @@ object FunSets {
 
   /** Retorna o conjunto que contém exatamente o elemento indicado.
     */
-  def singletonSet(elem: Int): Set = ???
+  def singletonSet(elem: Int): Set = (x: Int) => x == elem
 
   /** Retorna a união dos dois conjuntos dados, i.e., o conjunto de
     * todos os elementos que estão em `s` ou em `t`.
     */
-  def union(s: Set, t: Set): Set = ???
+  def union(s: Set, t: Set): Set = (x: Int) => s(x) || t(x)
 
   /** Retorna a interseção dos dois conjuntos dados, i.e., o conjunto
     * contendo todos os elementos que estão em `s` e em `t`.
     */
-  def intersect(s: Set, t: Set): Set = ???
+  def intersect(s: Set, t: Set): Set = (x: Int) => s(x) && t(x)
 
   /** Retorna a diferença entre os dois conjuntos dados, i.e., o
     * conjunto contendo todos os elementos que estão em `s` e não estão
     * em `t`.
     */
-  def diff(s: Set, t: Set): Set = ???
+  def diff(s: Set, t: Set): Set = (x: Int) => s(x) && !t(x)
 
   /** Retorna o subconjunto de `s` para o qual `p` é verdadeiro.
     */
-  def filter(s: Set, p: Int => Boolean): Set = ???
+  def filter(s: Set, p: Int => Boolean): Set = (x: Int) => s(x) && p(x)
 
   /** Os limites para os testes das funções `forall` e `exists`
     * são +/- 1000.

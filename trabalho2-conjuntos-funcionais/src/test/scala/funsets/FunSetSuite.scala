@@ -58,6 +58,8 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+    val s4 = (x: Int) => x > 0
+    val s5 = (x: Int) => List(-1, 1, -2, 2, -3, 3).contains(x)
   }
 
   /** Este teste está desabilitado (usando a função `ignore`) porque o
@@ -67,18 +69,91 @@ class FunSetSuite extends FunSuite {
     * Quando você terminar de implementar o `singletonSet`, troque a
     * função `ignore` por `test` para executar o teste.
     */
-  ignore("singletonSet(1) contains 1") {
+  test("singletonSet(1): contains 1") {
 
     /** Ao criar uma nova instância do trait `TestSets`, ganha-se acesso
       * ao valores `s1`, `s2` e `s3` que podem ser usados no teste.
       */
     new TestSets {
-      assert(contains(s1, 1), "Singleton(1)")
-      assert(contains(s2, 2), "Singleton(2)")
-      assert(contains(s3, 3), "Singleton(3)")
+      assert(contains(s1, 1) === true)
     }
   }
 
   // Escreva o restante dos testes.
+
+  test("singletonSet(1): does not contain 2 or 3") {
+
+    new TestSets {
+      assert(contains(s1, 2) === false)
+      assert(contains(s1, 3) === false)
+    }
+  }
+
+  test("union(1,2): should contain 1 and 2") {
+
+    new TestSets {
+      assert(contains(union(s1, s2), 1) === true)
+      assert(contains(union(s1, s2), 2) === true)
+    }
+  }
+  test("union(1,2): should not contain 3") {
+
+    new TestSets {
+      assert(contains(union(s1, s2), 3) === false)
+    }
+  }
+
+  test("intersect(1,2): should be empty") {
+
+    new TestSets {
+      assert(contains(intersect(s1, s2), 1) === false)
+      assert(contains(intersect(s1, s2), 2) === false)
+      assert(contains(intersect(s1, s2), 3) === false)
+    }
+  }
+  test("intersect(1,positiveIntegers): should contain 1") {
+
+    new TestSets {
+      assert(contains(intersect(s1, s4), 1) === true)
+    }
+  }
+  test("intersect(1,positiveIntegers): should not contain 2 and 3") {
+
+    new TestSets {
+      assert(contains(intersect(s1, s4), 2) === false)
+      assert(contains(intersect(s1, s4), 3) === false)
+    }
+  }
+
+  test("diff(positiveIntegers,1): should not contain 1") {
+
+    new TestSets {
+      assert(contains(diff(s4, s1), 1) === false)
+    }
+  }
+  test("diff(positiveIntegers,1): should contain 2 and 3") {
+
+    new TestSets {
+      assert(contains(diff(s4, s1), 2) === true)
+      assert(contains(diff(s4, s1), 3) === true)
+    }
+  }
+
+  test("filter(s5,positiveIntegers): should contain 1, 2 and 3") {
+
+    new TestSets {
+      assert(contains(filter(s5, s4), 1) === true)
+      assert(contains(filter(s5, s4), 2) === true)
+      assert(contains(filter(s5, s4), 3) === true)
+    }
+  }
+  test("filter(s5,positiveIntegers): should not contain -1, -2 or -3") {
+
+    new TestSets {
+      assert(contains(filter(s5, s4), -1) === false)
+      assert(contains(filter(s5, s4), -2) === false)
+      assert(contains(filter(s5, s4), -3) === false)
+    }
+  }
 
 }
