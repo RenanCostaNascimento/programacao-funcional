@@ -75,6 +75,10 @@ object FunSets {
     iter(-bound)
   }
 
+  /** Retorna `true` se *algum* dos inteiros (entre os limites
+    * especificados por `bound`) dentro de `s` satisfazem o predicado
+    * `p`; e `false` caso contrário. Usa a função forAll.
+    */
   def existsForAll(s: Set, p: Int => Boolean): Boolean = !forall(s, (x: Int) => !p(x))
 
   /** Retorna um conjunto transformado pela aplicação de `f` a cada
@@ -82,19 +86,18 @@ object FunSets {
     */
   def map(s: Set, f: Int => Int): Set = {
     def iter(x: Int): Set = {
-      if (x > bound) {
-        emptySet(x)
-      } else {
-        if (s(x)) {
-          union(singletonSet(f(x)), iter(x + 1))
-        } else {
-          iter(x + 1)
-        }
-      }
+      if (x > bound) emptySet(x)
+      else if (s(x)) union(singletonSet(f(x)), iter(x + 1))
+      else iter(x + 1)
     }
 
     iter(-bound)
   }
+
+  /** Retorna um conjunto transformado pela aplicação de `f` a cada
+    * elemntos do conjunto `s`. Usa a função existsForAll.
+    */
+  def mapExistsForAll(s: Set, f: Int => Int): Set = a => existsForAll(s, b => a == f(b))
 
   /** Exibe o conteúdo de um conjunto -- dentro dos limites definidos
     * por `bound`.

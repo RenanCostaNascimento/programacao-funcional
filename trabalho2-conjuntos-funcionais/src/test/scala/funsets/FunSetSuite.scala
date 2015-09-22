@@ -278,4 +278,43 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("mapExists(s1,times 2): should contains only the original elements times 2") {
+
+    new TestSets {
+      val setTimesTwo = mapExistsForAll(s1, x => x * 2)
+      assert(contains(setTimesTwo, 2) === true)
+      assert(contains(setTimesTwo, 1) === false)
+    }
+  }
+  test("mapExists(allEven,times 2): should contains only the original elements times 2") {
+
+    new TestSets {
+      val setTimesTwo = mapExistsForAll(allEven, x => x * 2)
+      assert(contains(setTimesTwo, 2) === false)
+      assert(contains(setTimesTwo, 6) === false)
+      assert(contains(setTimesTwo, 10) === false)
+
+      assert(contains(setTimesTwo, 4) === true)
+      assert(contains(setTimesTwo, 8) === true)
+      assert(contains(setTimesTwo, 12) === true)
+      assert(contains(setTimesTwo, 16) === true)
+      assert(contains(setTimesTwo, 20) === true)
+    }
+  }
+  test("mapExists(positiveNegative,times 2): should contains only the original elements times 2") {
+
+    new TestSets {
+      val setTimesTwo = mapExistsForAll(positiveNegative, x => x * 2)
+      assert(contains(setTimesTwo, -1) === false)
+      assert(contains(setTimesTwo, -3) === false)
+
+      assert(contains(setTimesTwo, -2) === true)
+      assert(contains(setTimesTwo, 2) === true)
+      assert(contains(setTimesTwo, -4) === true)
+      assert(contains(setTimesTwo, 4) === true)
+      assert(contains(setTimesTwo, -6) === true)
+      assert(contains(setTimesTwo, 6) === true)
+    }
+  }
+
 }
