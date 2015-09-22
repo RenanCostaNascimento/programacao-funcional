@@ -170,6 +170,12 @@ class FunSetSuite extends FunSuite {
       assert(forall(allPositive, x => x > 0) === true)
     }
   }
+  test("forall(allPositive,negative): should be false") {
+
+    new TestSets {
+      assert(forall(allPositive, x => x < 0) === false)
+    }
+  }
   test("forall(evenOdd,even): should be false") {
 
     new TestSets {
@@ -180,6 +186,68 @@ class FunSetSuite extends FunSuite {
 
     new TestSets {
       assert(forall(allEven, x => x % 2 == 0) === true)
+    }
+  }
+
+  test("exists(evenOdd,odd): should be true") {
+
+    new TestSets {
+      assert(exists(evenOdd, x => x % 2 != 0) === true)
+    }
+  }
+  test("exists(positiveNegative,positive): should be true") {
+
+    new TestSets {
+      assert(exists(positiveNegative, x => x > 0) === true)
+    }
+  }
+  test("exists(positiveNegative,negative): should be true") {
+
+    new TestSets {
+      assert(exists(positiveNegative, x => x < 0) === true)
+    }
+  }
+  test("exists(allPositive,negative): should be false") {
+
+    new TestSets {
+      assert(exists(allPositive, x => x < 0) === false)
+    }
+  }
+
+  test("existsForAll(evenOdd,odd): should be true") {
+
+    new TestSets {
+      assert(existsForAll(evenOdd, x => x % 2 != 0) === true)
+    }
+  }
+  test("existsForAll(positiveNegative,positive): should be true") {
+
+    new TestSets {
+      assert(existsForAll(positiveNegative, x => x > 0) === true)
+    }
+  }
+  test("existsForAll(positiveNegative,negative): should be true") {
+
+    new TestSets {
+      assert(existsForAll(positiveNegative, x => x < 0) === true)
+    }
+  }
+  test("existsForAll(allPositive,negative): should be false") {
+
+    new TestSets {
+      assert(existsForAll(allPositive, x => x < 0) === false)
+    }
+  }
+
+  test("map(allEven,times 2): should contains only the original elements times 2") {
+
+    new TestSets {
+      val setTimesTwo = map(s1, x => x * 2)
+      assert(contains(setTimesTwo, 2) === true)
+      assert(contains(setTimesTwo, 1) === false)
+
+
+
     }
   }
 

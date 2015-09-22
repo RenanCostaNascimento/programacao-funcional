@@ -62,12 +62,21 @@ object FunSets {
     * especificados por `bound`) dentro de `s` satisfazem o predicado
     * `p`; e `false` caso contrário.
     */
-  def exists(s: Set, p: Int => Boolean): Boolean = ???
+  def exists(s: Set, p: Int => Boolean): Boolean = {
+    def iter(a: Int): Boolean = {
+      if (a > bound) false
+      else if (s(a) && p(a)) true
+      else iter(a + 1)
+    }
+    iter(-bound)
+  }
+
+  def existsForAll(s: Set, p: Int => Boolean): Boolean = !forall(s, (x: Int) => !p(x))
 
   /** Retorna um conjunto transformado pela aplicação de `f` a cada
     * elemntos do conjunto `s`.
     */
-  def map(s: Set, f: Int => Int): Set = ???
+  def map(s: Set, f: Int => Int): Set = (x: Int) => s(f(x))
 
   /** Exibe o conteúdo de um conjunto -- dentro dos limites definidos
     * por `bound`.
