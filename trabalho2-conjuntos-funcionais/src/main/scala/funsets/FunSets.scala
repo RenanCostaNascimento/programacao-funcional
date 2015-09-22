@@ -16,6 +16,10 @@ object FunSets {
     */
   def contains(s: Set, elem: Int): Boolean = s(elem)
 
+  /** Retorna um conjunto vazio.
+    */
+  def emptySet(elem: Int): Set = (x: Int) => false
+
   /** Retorna o conjunto que contém exatamente o elemento indicado.
     */
   def singletonSet(elem: Int): Set = (x: Int) => x == elem
@@ -76,7 +80,21 @@ object FunSets {
   /** Retorna um conjunto transformado pela aplicação de `f` a cada
     * elemntos do conjunto `s`.
     */
-  def map(s: Set, f: Int => Int): Set = (x: Int) => s(f(x))
+  def map(s: Set, f: Int => Int): Set = {
+    def iter(x: Int): Set = {
+      if (x > bound) {
+        emptySet(x)
+      } else {
+        if (s(x)) {
+          union(singletonSet(f(x)), iter(x + 1))
+        } else {
+          iter(x + 1)
+        }
+      }
+    }
+
+    iter(-bound)
+  }
 
   /** Exibe o conteúdo de um conjunto -- dentro dos limites definidos
     * por `bound`.
