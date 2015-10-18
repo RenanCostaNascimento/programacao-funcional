@@ -57,16 +57,18 @@ abstract class TweetSet {
     */
   def union(that: TweetSet): TweetSet
 
-  /** Retorna o tweet neste conjunto que tem a maior contagem de
+  /** Retorna o tweet neste conjunto que tem a menor contagem de
     * retweets.
     *
-    * Chamar `mostRetweeted` em um conjunto vazio deve gerar uma
+    * Chamar `leastRetweeted` em um conjunto vazio deve gerar uma
     * exceção do tipo `java.util.NoSuchElementException`.
     *
     * Pergunta: Esse método deve ser implementado aqui, ou deve
     * permanecer abstrato e ser implementado nas sub-classes?
     */
-  def mostRetweeted: Tweet = ???
+  def leastRetweeted: Tweet
+
+  def leastRetweetedAcc(mostTwitted: Tweet): Tweet
 
   /** Retorna uma lista contendo todos os tweets deste conjunto,
     * ordenados pela contagem de retweets em ordem
@@ -78,7 +80,15 @@ abstract class TweetSet {
     * Pergunta: Esse método deve ser implementado aqui, ou deve
     * permanecer abstrato e ser implementado nas sub-classes?
     */
-  def descendingByRetweet: TweetList = ???
+  def descendingByRetweet: TweetList = {
+    def descendingByRetweetAcc(list: TweetList, tweetSet: TweetSet): TweetList = {
+      val mostTweeted = tweetSet.leastRetweeted
+      if (mostTweeted != null) descendingByRetweetAcc(Cons(mostTweeted, list), tweetSet.remove(mostTweeted))
+      else list
+    }
+
+    descendingByRetweetAcc(Nil, this)
+  }
 
 
   /* ===================================================================
@@ -116,6 +126,10 @@ object Empty extends TweetSet {
 
   def union(that: TweetSet): TweetSet = that
 
+  def leastRetweeted: Tweet = leastRetweetedAcc(null)
+
+  def leastRetweetedAcc(mostTwitted: Tweet): Tweet = mostTwitted
+
   /* ===================================================================
    * Os métodos abaixo já estão implementados.
    */
@@ -150,10 +164,28 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 
   def union(that: TweetSet): TweetSet = {
     right.union(left.union(that.incl(elem)))
-//    SAME AS ---->
-//    val elemSet = that.incl(elem)
-//    val leftSet = left.union(elemSet)
-//    right.union(leftSet)
+    //    SAME AS ---->
+    //    val elemSet = that.incl(elem)
+    //    val leftSet = left.union(elemSet)
+    //    right.union(leftSet)
+  }
+
+  def leastRetweeted: Tweet = {
+    leastRetweetedAcc(elem)
+  }
+
+  def leastRetweetedAcc(mostTwitted: Tweet): Tweet = {
+    if (elem.retweets < mostTwitted.retweets) right.leastRetweetedAcc(left.leastRetweetedAcc(elem))
+    else right.leastRetweetedAcc(left.leastRetweetedAcc(mostTwitted))
+    //  SAME AS ---->
+    //    if (elem.retweets > mostTwitted.retweets) {
+    //      val leftTweet = left.mostRetweetedAcc(elem)
+    //      right.mostRetweetedAcc(leftTweet)
+    //    }
+    //    else {
+    //      val leftTweet = left.mostRetweetedAcc(mostTwitted)
+    //      right.mostRetweetedAcc(leftTweet)
+    //    }
   }
 
   /* ===================================================================
@@ -220,34 +252,40 @@ object GoogleVsApple {
   val google = List("android", "Android", "galaxy", "Galaxy", "nexus", "Nexus")
   val apple = List("ios", "iOS", "iphone", "iPhone", "ipad", "iPad")
 
-  lazy val googleTweets: TweetSet = ???
-  lazy val appleTweets: TweetSet = ???
+  lazy val googleTweets: TweetSet = {
+    def loop(topics: List[String], tweets: TweetSet): TweetSet = {
+      if (!topics.isEmpty) loop(topics.tail, TweetReader.allTweets.filter(tw => tw.text.contains(topics.head))).union(tweets)
+      else tweets
+    }
+    loop(google, Empty)
+  }
+
+  lazy val appleTweets: TweetSet = {
+    def loop(topics: List[String], tweets: TweetSet): TweetSet = {
+      if (!topics.isEmpty) loop(topics.tail, TweetReader.allTweets.filter(tw => tw.text.contains(topics.head))).union(tweets)
+      else tweets
+    }
+    loop(apple, Empty)
+  }
 
   /** Uma lista de todos os tweets mencionando uma palavra chave de
     * qualquer das duas listas, apple ou google, ordenada pelo número
     * de retweets.
     */
-  lazy val trending: TweetList = ???
+  lazy val trending: TweetList = {
+    appleTweets.union(googleTweets).descendingByRetweet
+  }
 }
 
 
 object Main extends App {
 
   // Imprime os “trending tweets” (tweets populares?)
-  //GoogleVsApple.trending foreach println
-  trait TestSets {
-    val set1 = Empty
-    val set2 = set1.incl(new Tweet("a", "a body", 20))
-    val set3 = set2.incl(new Tweet("b", "b body", 20))
-    val c = new Tweet("c", "c body", 7)
-    val d = new Tweet("d", "d body", 9)
-    val set4c = set3.incl(c)
-    val set4d = set3.incl(d)
-    val set5 = set4c.incl(d)
-  }
+  GoogleVsApple.trending.foreach(tw => println(tw.text + " -- " + tw.retweets))
 
-  new TestSets {
-    set5.filter(tw => tw.user == "a")
-  }
+  //  println("---GOOGLE---")
+  //  GoogleVsApple.googleTweets.foreach(tw => println(tw.text))
+  //  println("---APPLE---")
+  //  GoogleVsApple.appleTweets.foreach(tw => println(tw.text))
 
 }

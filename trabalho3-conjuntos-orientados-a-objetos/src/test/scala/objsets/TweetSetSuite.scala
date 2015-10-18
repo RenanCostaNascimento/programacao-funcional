@@ -61,7 +61,19 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
-  ignore("descending: set5") {
+  test("leastRetweeted: s1") {
+    new TestSets {
+      assert((set1.leastRetweeted) === null)
+    }
+  }
+
+  test("leastRetweeted: s5") {
+    new TestSets {
+      assert((set5.leastRetweeted).retweets === 7)
+    }
+  }
+
+  test("descending: set5") {
     new TestSets {
       val trends = set5.descendingByRetweet
       assert(!trends.isEmpty)
