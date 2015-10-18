@@ -148,7 +148,13 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     //    }
   }
 
-  def union(that: TweetSet): TweetSet = ???
+  def union(that: TweetSet): TweetSet = {
+    right.union(left.union(that.incl(elem)))
+//    SAME AS ---->
+//    val elemSet = that.incl(elem)
+//    val leftSet = left.union(elemSet)
+//    right.union(leftSet)
+  }
 
   /* ===================================================================
    * Os métodos abaixo já estão implementados.
